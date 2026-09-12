@@ -1,1 +1,4 @@
-export const greet = (name: string): string => `Hello ${name}`;
+export {
+  DAppKitProvider,
+  useDappKitContext,
+} from "src/components/DAppKitProvider";
