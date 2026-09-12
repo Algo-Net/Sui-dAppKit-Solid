@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve", // CRITICAL: Tells TS to leave JSX alone so the Solid compiler can handle it
+    "jsxImportSource": "@solidjs/web", // Tells TS where to find Solid's type definitions for elements
+    "rootDir": "./src",
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./dist"
+  },
+  "include": [
+    "src"
+  ]
+}

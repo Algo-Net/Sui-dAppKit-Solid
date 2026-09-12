@@ -1,0 +1,59 @@
+{
+  "name": "@algonet/dapp-kit-solid",
+  "version": "0.0.1",
+  "description": "A SolidJS 2 implementation similar to the Sui dapp-kit-react package.",
+  "author": "Ocky (ocky@algonet.xyz)",
+  "license": "MIT",
+  "keywords": [],
+  "packageManager": "pnpm@10.33.2",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "solid": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./ui": {
+      "solid": "./src/ui.ts",
+      "import": "./dist/ui.js",
+      "types": "./dist/ui.d.ts",
+      "style": "./dist/dapp-kit-solid.css"
+    }
+  },
+  "dependencies": {
+    "@mysten/dapp-kit-core": "^1.6.x"
+  },
+  "peerDependencies": {
+    "@mysten/sui": "^2.0.0",
+    "solid-js": "^2.0.0",
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@mysten/sui": "2.31.0",
+    "@mysten/wallet-standard": "0.21.24",
+    "@solidjs/testing-library": "1.0.0-beta.3",
+    "@solidjs/vite-plugin": "3.0.0-next.43",
+    "@solidjs/web": "2.0.0-rc.8",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "26.5.1",
+    "jsdom": "30.0.1",
+    "solid-js": "2.0.0-rc.8",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "vite": "8.3.0",
+    "vite-plugin-dts": "5.1.0",
+    "vitest": "5.0.0"
+  }
+}
