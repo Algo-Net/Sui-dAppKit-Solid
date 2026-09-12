@@ -2,6 +2,9 @@ import { defineConfig } from "vitest/config";
 import solid from "@solidjs/vite-plugin";
 
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [solid()],
   test: {
     environment: "jsdom", // Replicates a web browser window inside Node.js
