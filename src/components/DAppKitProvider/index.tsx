@@ -1,6 +1,6 @@
-import { createContext, useContext } from "solid-js";
-import type { ParentProps } from "solid-js";
 import type { DefaultExpectedDppKit } from "@mysten/dapp-kit-core";
+import type { ParentProps } from "solid-js";
+import { createContext, useContext } from "solid-js";
 
 export const DAppKitContext = createContext<DefaultExpectedDppKit>();
 
@@ -9,9 +9,7 @@ export type DAppKitProviderProps = ParentProps<{
 }>;
 
 export function DAppKitProvider(props: DAppKitProviderProps) {
-  return (
-    <DAppKitContext value={props.dAppKit}>{props.children}</DAppKitContext>
-  );
+  return <DAppKitContext value={props.dAppKit}>{props.children}</DAppKitContext>;
 }
 
 export function useDappKitContext() {

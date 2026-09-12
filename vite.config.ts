@@ -1,9 +1,9 @@
-import { defineConfig } from "vite";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import solid from "@solidjs/vite-plugin";
 import tailwind from "@tailwindcss/vite";
+import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
 
 // Safely replicate __dirname in modern ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -28,16 +28,10 @@ export default defineConfig({
         ui: resolve(__dirname, "src/ui.ts"),
       },
       formats: ["es"], // SolidJS 2 libraries are exclusively ESM-first
-      fileName: (format, entryName) => `${entryName}.js`, // Generates index.js and ui.js
+      fileName: (_format, entryName) => `${entryName}.js`, // Generates index.js and ui.js
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "solid-js/web",
-        "@mysten/sui",
-        "@mysten/dapp-kit-core",
-        "tailwindcss",
-      ],
+      external: ["solid-js", "solid-js/web", "@mysten/sui", "@mysten/dapp-kit-core", "tailwindcss"],
       output: {
         format: "esm",
         assetFileNames: (assetInfo) => {

@@ -14,12 +14,8 @@
     "skipLibCheck": true,
     "outDir": "./dist",
     "paths": {
-      "src/*": [
-        "./src/*"
-      ]
+      "src/*": ["./src/*"]
     }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
