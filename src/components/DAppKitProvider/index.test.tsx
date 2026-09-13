@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: The any values are placeholders for elements not relevant to the testing. */
+
 import type { DefaultExpectedDppKit } from "@mysten/dapp-kit-core";
 import { renderHook } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
