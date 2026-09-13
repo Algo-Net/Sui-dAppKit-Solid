@@ -32,6 +32,10 @@
       "style": "./dist/dapp-kit-solid.css"
     }
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "dependencies": {
     "@mysten/dapp-kit-core": "^1.6.x"
   },
