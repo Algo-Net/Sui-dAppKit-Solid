@@ -34,8 +34,6 @@ jobs:
           pnpm run lint
 
       - name: Publish to NPM Registry with Provenance
-        run: |
-          pnpm pack
-          npm publish *.tgz --registry=https://npmjs.org
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
