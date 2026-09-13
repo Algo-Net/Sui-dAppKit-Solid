@@ -19,8 +19,8 @@ function createMockStore(initialValue: any) {
     },
     emit: (newValue: any) => {
       currentValue = newValue;
-      subscribers.forEach((cb) => {
-        cb(newValue);
+      subscribers.forEach((callback) => {
+        callback(newValue);
       });
     },
   };
