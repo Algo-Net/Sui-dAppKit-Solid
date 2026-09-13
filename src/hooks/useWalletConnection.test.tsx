@@ -28,14 +28,9 @@ function createMockStore(initialValue: any) {
 
 describe("useWalletConnection()", () => {
   it("subscribes to the connection store and returns the initial state value", () => {
-    const mockConnectionStore = createMockStore({
-      status: "disconnected",
-      wallet: null,
-    });
+    const mockConnectionStore = createMockStore({ status: "disconnected", wallet: null });
 
-    const mockDAppKit = {
-      stores: { $connection: mockConnectionStore },
-    } as unknown as DAppKit<any>;
+    const mockDAppKit = { stores: { $connection: mockConnectionStore } } as unknown as DAppKit<any>;
 
     const wrapper = (props: { children: any }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
@@ -49,11 +44,7 @@ describe("useWalletConnection()", () => {
   it("updates dynamically when the underlying core store broadcasts a new state change", async () => {
     const mockConnectionStore = createMockStore({ status: "disconnected", wallet: null });
 
-    const mockDAppKit = {
-      stores: {
-        $connection: mockConnectionStore,
-      },
-    } as unknown as DAppKit<any>;
+    const mockDAppKit = { stores: { $connection: mockConnectionStore } } as unknown as DAppKit<any>;
 
     const wrapper = (props: { children: any }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>

@@ -30,9 +30,7 @@ describe("useWallets()", () => {
   it("subscribes to the wallets store and returns the initial wallet array", () => {
     const mockWalletStore = createMockStore([{ name: "Slush Wallet" }]);
 
-    const mockDAppKit = {
-      stores: { $wallets: mockWalletStore },
-    } as unknown as DAppKit<any>;
+    const mockDAppKit = { stores: { $wallets: mockWalletStore } } as unknown as DAppKit<any>;
 
     const wrapper = (props: { children: any }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
@@ -46,9 +44,7 @@ describe("useWallets()", () => {
   it(" updates dynamically when the underlying core store broadcasts a new wallet list change", async () => {
     const mockWalletStore = createMockStore([{ name: "Slush Wallet" }]);
 
-    const mockDAppKit = {
-      stores: { $wallets: mockWalletStore },
-    } as unknown as DAppKit<any>;
+    const mockDAppKit = { stores: { $wallets: mockWalletStore } } as unknown as DAppKit<any>;
 
     const wrapper = (props: { children: any }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
