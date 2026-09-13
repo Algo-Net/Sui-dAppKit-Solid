@@ -61,12 +61,12 @@ describe("useWalletConnection()", () => {
 
     const { result } = renderHook(() => useWalletConnection(), { wrapper });
 
-    mockConnectionStore.emit({ status: "connected", wallet: { name: "Sui Wallet" } });
+    mockConnectionStore.emit({ status: "connected", wallet: { name: "Slush Wallet" } });
 
     // Allow event loop to turn once so the signal queue is completely flushed.
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    expect(result()).toEqual({ status: "connected", wallet: { name: "Sui Wallet" } });
+    expect(result()).toEqual({ status: "connected", wallet: { name: "Slush Wallet" } });
   });
 
   it("respects an explicitly pass dAppKit instance override rather than using the parent context", () => {
