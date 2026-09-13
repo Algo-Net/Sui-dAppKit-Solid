@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A SolidJS 2 implementation similar to the Sui dapp-kit-react package.",
   "author": "Ocky (ocky@algonet.xyz)",
+  "repository": {
+    "url": "https://github.com/Algo-Net/Sui-dAppKit-Solid"
+  },
   "license": "MIT",
   "keywords": [],
   "packageManager": "pnpm@10.33.2",
