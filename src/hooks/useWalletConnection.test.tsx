@@ -1,23 +1,27 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: The any values are placeholders for elements not relevant to the testing. */
-
-import type { DAppKit } from "@mysten/dapp-kit-core";
+import type { DAppKit, DAppKitCompatibleClient } from "@mysten/dapp-kit-core";
 import { renderHook } from "@solidjs/testing-library";
+import type { JSX } from "@solidjs/web/jsx-runtime";
 import { DAppKitProvider } from "src/components/DAppKitProvider";
 import { describe, expect, it } from "vitest";
 import { useWalletConnection } from "./useWalletConnection";
 
+interface MockState {
+  status: string;
+  wallet?: { name: string } | null;
+}
+
 // Create a mock store helper that mimics a nanosore structure
-function createMockStore(initialValue: any) {
+function createMockStore(initialValue: MockState) {
   let currentValue = initialValue;
-  const subscribers = new Set<(val: any) => void>();
+  const subscribers = new Set<(val: MockState) => void>();
 
   return {
     get: () => currentValue,
-    subscribe: (callback: (val: any) => void) => {
+    subscribe: (callback: (val: MockState) => void) => {
       subscribers.add(callback);
       return () => subscribers.delete(callback);
     },
-    emit: (newValue: any) => {
+    emit: (newValue: MockState) => {
       currentValue = newValue;
       subscribers.forEach((callback) => {
         callback(newValue);
@@ -30,9 +34,11 @@ describe("useWalletConnection()", () => {
   it("subscribes to the connection store and returns the initial state value", () => {
     const mockConnectionStore = createMockStore({ status: "disconnected", wallet: null });
 
-    const mockDAppKit = { stores: { $connection: mockConnectionStore } } as unknown as DAppKit<any>;
+    const mockDAppKit = {
+      stores: { $connection: mockConnectionStore },
+    } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
-    const wrapper = (props: { children: any }) => (
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
@@ -44,9 +50,11 @@ describe("useWalletConnection()", () => {
   it("updates dynamically when the underlying core store broadcasts a new state change", async () => {
     const mockConnectionStore = createMockStore({ status: "disconnected", wallet: null });
 
-    const mockDAppKit = { stores: { $connection: mockConnectionStore } } as unknown as DAppKit<any>;
+    const mockDAppKit = {
+      stores: { $connection: mockConnectionStore },
+    } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
-    const wrapper = (props: { children: any }) => (
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
@@ -64,10 +72,15 @@ describe("useWalletConnection()", () => {
     const primaryStore = createMockStore({ status: "disconnected" });
     const overrideStore = createMockStore({ status: "connected" });
 
-    const primaryDAppKit = { stores: { $connection: primaryStore } } as unknown as DAppKit<any>;
-    const overrideDAppKit = { stores: { $connection: overrideStore } } as unknown as DAppKit<any>;
+    const primaryDAppKit = {
+      stores: { $connection: primaryStore },
+    } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
-    const wrapper = (props: { children: any }) => (
+    const overrideDAppKit = {
+      stores: { $connection: overrideStore },
+    } as unknown as DAppKit<[], DAppKitCompatibleClient>;
+
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={primaryDAppKit}>{props.children}</DAppKitProvider>
     );
 

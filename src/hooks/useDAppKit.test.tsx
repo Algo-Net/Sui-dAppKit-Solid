@@ -1,7 +1,6 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: The any values are placeholders for elements not relevant to the testing. */
-
-import type { DAppKit } from "@mysten/dapp-kit-core";
+import type { DAppKit, DAppKitCompatibleClient } from "@mysten/dapp-kit-core";
 import { renderHook } from "@solidjs/testing-library";
+import type { JSX } from "@solidjs/web/jsx-runtime";
 import { DAppKitProvider } from "src/components/DAppKitProvider";
 import { describe, expect, it, vi } from "vitest";
 import { useDAppKit } from "./useDAppKit";
@@ -10,11 +9,11 @@ const mockDappKit = {
   getState: vi.fn(),
   subscribe: vi.fn(),
   stores: {},
-} as unknown as DAppKit<any>;
+} as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
 describe("useDAppKit()", () => {
   it("successfully retrieves the dAppKit instance from the active provider context tree", () => {
-    const wrapper = (props: { children: any }) => (
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDappKit}>{props.children}</DAppKitProvider>
     );
 
@@ -24,9 +23,9 @@ describe("useDAppKit()", () => {
   });
 
   it("prioritizes and returns the explicitly passed dAppKit instance parameter", () => {
-    const overrideDAppKit = { name: "OverrideInstance" } as unknown as DAppKit<any>;
+    const overrideDAppKit = { name: "OverrideInstance" } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
-    const wrapper = (props: { children: any }) => (
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDappKit}>{props.children}</DAppKitProvider>
     );
 

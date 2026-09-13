@@ -1,23 +1,26 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: The any values are placeholders for elements not relevant to the testing. */
-
-import type { DAppKit } from "@mysten/dapp-kit-core";
+import type { DAppKit, DAppKitCompatibleClient } from "@mysten/dapp-kit-core";
 import { renderHook } from "@solidjs/testing-library";
+import type { JSX } from "@solidjs/web/jsx-runtime";
 import { DAppKitProvider } from "src/components/DAppKitProvider";
 import { describe, expect, it } from "vitest";
 import { useWAllets } from "./useWallets";
 
+interface MockState {
+  name: string;
+}
+
 // Create a mock store helper that mimics a nanostore structure
-function createMockStore(initialValue: any) {
+function createMockStore(initialValue: MockState[]) {
   let currentValue = initialValue;
-  const subscribers = new Set<(val: any) => void>();
+  const subscribers = new Set<(val: MockState[]) => void>();
 
   return {
     get: () => currentValue,
-    subscribe: (callback: (val: any) => void) => {
+    subscribe: (callback: (val: MockState[]) => void) => {
       subscribers.add(callback);
       return () => subscribers.delete(callback);
     },
-    emit: (newValue: any) => {
+    emit: (newValue: MockState[]) => {
       currentValue = newValue;
       subscribers.forEach((callback) => {
         callback(newValue);
@@ -30,9 +33,9 @@ describe("useWallets()", () => {
   it("subscribes to the wallets store and returns the initial wallet array", () => {
     const mockWalletStore = createMockStore([{ name: "Slush Wallet" }]);
 
-    const mockDAppKit = { stores: { $wallets: mockWalletStore } } as unknown as DAppKit<any>;
+    const mockDAppKit = { stores: { $wallets: mockWalletStore } } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
-    const wrapper = (props: { children: any }) => (
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
@@ -44,9 +47,9 @@ describe("useWallets()", () => {
   it(" updates dynamically when the underlying core store broadcasts a new wallet list change", async () => {
     const mockWalletStore = createMockStore([{ name: "Slush Wallet" }]);
 
-    const mockDAppKit = { stores: { $wallets: mockWalletStore } } as unknown as DAppKit<any>;
+    const mockDAppKit = { stores: { $wallets: mockWalletStore } } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
-    const wrapper = (props: { children: any }) => (
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
@@ -64,10 +67,10 @@ describe("useWallets()", () => {
     const primaryStore = createMockStore([{ name: "Primary Wallet" }]);
     const overrideStore = createMockStore([{ name: "Override Wallet" }]);
 
-    const primaryDAppKit = { stores: { $wallets: primaryStore } } as unknown as DAppKit<any>;
-    const overrideDAppKit = { stores: { $wallets: overrideStore } } as unknown as DAppKit<any>;
+    const primaryDAppKit = { stores: { $wallets: primaryStore } } as unknown as DAppKit<[], DAppKitCompatibleClient>;
+    const overrideDAppKit = { stores: { $wallets: overrideStore } } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
-    const wrapper = (props: { children: any }) => (
+    const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={primaryDAppKit}>{props.children}</DAppKitProvider>
     );
 

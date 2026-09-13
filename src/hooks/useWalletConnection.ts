@@ -1,14 +1,12 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: The any values are correct in that DAppKit should allow any type. */
-
-import type { DAppKit, RegisteredDAppKit } from "@mysten/dapp-kit-core";
+import type { DAppKit, DAppKitCompatibleClient, RegisteredDAppKit } from "@mysten/dapp-kit-core";
 import { createSignal, onCleanup } from "solid-js";
 import { useDappKitContext } from "src/components/DAppKitProvider";
 
-export type UseWalletConnectionOptions<TDAppKit extends DAppKit<any>> = {
+export type UseWalletConnectionOptions<TDAppKit extends DAppKit<[], DAppKitCompatibleClient>> = {
   dAppKit?: TDAppKit;
 };
 
-export function useWalletConnection<TDAppKit extends DAppKit<any> = RegisteredDAppKit>(
+export function useWalletConnection<TDAppKit extends DAppKit<[], DAppKitCompatibleClient> = RegisteredDAppKit>(
   options: UseWalletConnectionOptions<TDAppKit> = {},
 ) {
   const instance = options.dAppKit || useDappKitContext();
