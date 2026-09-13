@@ -3,7 +3,7 @@ import { renderHook } from "@solidjs/testing-library";
 import type { JSX } from "@solidjs/web/jsx-runtime";
 import { DAppKitProvider } from "src/components/DAppKitProvider";
 import { describe, expect, it } from "vitest";
-import { useCurrentClient } from "./useCurrentClient";
+import { useCurrentClient } from "./index";
 
 interface MockClient {
   endpoint: string;

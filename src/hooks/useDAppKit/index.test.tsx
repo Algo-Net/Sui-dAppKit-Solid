@@ -3,7 +3,7 @@ import { renderHook } from "@solidjs/testing-library";
 import type { JSX } from "@solidjs/web/jsx-runtime";
 import { DAppKitProvider } from "src/components/DAppKitProvider";
 import { describe, expect, it, vi } from "vitest";
-import { useDAppKit } from "./useDAppKit";
+import { useDAppKit } from "./index";
 
 const mockDappKit = {
   getState: vi.fn(),

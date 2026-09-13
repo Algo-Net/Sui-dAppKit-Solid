@@ -3,19 +3,24 @@ import { renderHook } from "@solidjs/testing-library";
 import type { JSX } from "@solidjs/web/jsx-runtime";
 import { DAppKitProvider } from "src/components/DAppKitProvider";
 import { describe, expect, it } from "vitest";
-import { useCurrentNetwork } from "./useCurrentNetwork";
+import { useCurrentWallet } from "./index";
 
-function createMockStore(initialValue: string) {
+interface MockState {
+  status: string;
+  wallet?: { name: string } | null;
+}
+
+function createMockStore(initialValue: MockState) {
   let currentValue = initialValue;
-  const subscribers = new Set<(val: string) => void>();
+  const subscribers = new Set<(val: MockState) => void>();
 
   return {
     get: () => currentValue,
-    subscribe: (callback: (val: string) => void) => {
+    subscribe: (callback: (val: MockState) => void) => {
       subscribers.add(callback);
       return () => subscribers.delete(callback);
     },
-    emit: (newValue: string) => {
+    emit: (newValue: MockState) => {
       currentValue = newValue;
       subscribers.forEach((callback) => {
         callback(newValue);
@@ -24,41 +29,41 @@ function createMockStore(initialValue: string) {
   };
 }
 
-describe("useCurrentNetwork()", () => {
-  it("subscribes to the network store and returns the initial network variable value", () => {
-    const mockNetworkStore = createMockStore("sui:mainnet");
+describe("useCurrentWallet()", () => {
+  it("returns the initial wallet metadata state matching the active connection store", () => {
+    const mockConnectionStore = createMockStore({ status: "disconnected", wallet: null });
 
     const mockDAppKit = {
-      stores: { $currentNetwork: mockNetworkStore },
+      stores: { $connection: mockConnectionStore },
     } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
     const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
-    const { result } = renderHook(() => useCurrentNetwork(), { wrapper });
+    const { result } = renderHook(() => useCurrentWallet(), { wrapper });
 
-    expect(result()).toBe("sui:mainnet");
+    expect(result()).toBeNull();
   });
 
-  it("updates dynamically when the underlying core store switches networks", async () => {
-    const mockNetworkStore = createMockStore("sui::mainnet");
+  it("reactively updates its returned value when a wallet extension links up", async () => {
+    const mockConnectionStore = createMockStore({ status: "disconnected", wallet: null });
 
     const mockDAppKit = {
-      stores: { $currentNetwork: mockNetworkStore },
+      stores: { $connection: mockConnectionStore },
     } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
     const wrapper = (props: { children: JSX.Element }) => (
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
-    const { result } = renderHook(() => useCurrentNetwork(), { wrapper });
+    const { result } = renderHook(() => useCurrentWallet(), { wrapper });
 
-    mockNetworkStore.emit("sui:testnet");
+    mockConnectionStore.emit({ status: "connected", wallet: { name: "Slush Wallet" } });
 
     // Allow event loop to turn once so the signal queue is completely finished.
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    expect(result()).toBe("sui:testnet");
+    expect(result()).toEqual({ name: "Slush Wallet" });
   });
 });
