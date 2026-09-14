@@ -1,6 +1,7 @@
 # Sui dAppKit Solid <a name="readme-top"></a>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
+[![NPM](https://img.shields.io/npm/v/@algonet/sui-dappkit-solid.svg)](https://www.npmjs.com/package/@algonet/sui-dappkit-solid)
 [![SolidJS 2](https://img.shields.io/badge/SolidJS-2.0-blue.svg)](https://www.solidjs.com/)
 [![SUI SDK](https://img.shields.io/badge/SUI_SDK-%5E2.0.0-brightgreen.svg)](https://github.com/MystenLabs/sui)
 
