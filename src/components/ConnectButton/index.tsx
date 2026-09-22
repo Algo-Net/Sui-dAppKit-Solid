@@ -6,6 +6,7 @@ declare module "@solidjs/web" {
     interface IntrinsicElements {
       "mysten-dapp-kit-connect-button": JSX.HTMLAttributes<HTMLElement> & {
         instance?: DAppKit<[], DAppKitCompatibleClient>;
+        "prop:instance"?: DAppKit<[], DAppKitCompatibleClient>;
       };
     }
   }
@@ -18,5 +19,5 @@ export type ConnectButtonProps = {
 export function ConnectButton(props: ConnectButtonProps) {
   const dAppKit = () => props.dAppKit || useDappKitContext();
 
-  return <mysten-dapp-kit-connect-button {...props} instance={dAppKit()} />;
+  return <mysten-dapp-kit-connect-button {...props} prop:instance={dAppKit()} />;
 }

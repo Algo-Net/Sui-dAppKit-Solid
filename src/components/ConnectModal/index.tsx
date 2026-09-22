@@ -6,6 +6,7 @@ declare module "@solidjs/web" {
     interface IntrinsicElements {
       "mysten-dapp-kit-connect-modal": JSX.HTMLAttributes<HTMLElement> & {
         instance?: DAppKit<[], DAppKitCompatibleClient>;
+        "prop:instance"?: DAppKit<[], DAppKitCompatibleClient>;
       };
     }
   }
@@ -18,5 +19,5 @@ export type ConnectModalProps = {
 export function ConnectModal(props: ConnectModalProps) {
   const dAppKit = () => props.dAppKit || useDappKitContext();
 
-  return <mysten-dapp-kit-connect-modal {...props} instance={dAppKit()} />;
+  return <mysten-dapp-kit-connect-modal {...props} prop:instance={dAppKit()} />;
 }

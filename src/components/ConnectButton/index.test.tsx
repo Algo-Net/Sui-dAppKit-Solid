@@ -11,7 +11,7 @@ const mockDappKit = {
 } as unknown as DAppKit<[], DAppKitCompatibleClient>;
 
 describe("<ConnectButton />", () => {
-  it("renders the custom tag successfully inside the DOM structure", () => {
+  it("renders the custom tag successfully inside the DOM structure and sets instance", () => {
     render(() => (
       <DAppKitProvider dAppKit={mockDappKit}>
         <ConnectButton data-testid="wallet-trigger" />
@@ -21,5 +21,8 @@ describe("<ConnectButton />", () => {
     const element = screen.getByTestId("wallet-trigger");
 
     expect(element.tagName.toLowerCase()).toBe("mysten-dapp-kit-connect-button");
+
+    const webComponent = element as HTMLElement & { instance: typeof mockDappKit };
+    expect(webComponent.instance).toBe(mockDappKit);
   });
 });
