@@ -1,3 +1,5 @@
+import "@mysten/dapp-kit-core/web";
+
 export * from "@mysten/dapp-kit-core";
 
 export type { DAppKitProviderProps } from "src/components/DAppKitProvider";
