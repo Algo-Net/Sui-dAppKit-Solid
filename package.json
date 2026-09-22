@@ -1,6 +1,6 @@
 {
   "name": "@algonet/sui-dappkit-solid",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A SolidJS 2 implementation similar to the Sui dapp-kit-react package.",
   "author": "Ocky (ocky@algonet.xyz)",
   "repository": {
