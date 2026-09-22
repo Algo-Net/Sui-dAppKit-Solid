@@ -16,23 +16,20 @@
     "lint": "biome check ."
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "solid": "./src/index.ts",
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./ui": {
-      "solid": "./src/ui.ts",
       "import": "./dist/ui.js",
       "types": "./dist/ui.d.ts",
-      "style": "./dist/dapp-kit-solid.css"
+      "style": "./dist/sui-dapp-kit-solid.css"
     }
   },
   "publishConfig": {
