@@ -6,7 +6,7 @@ export type UseWalletOptions<TDAppKit extends DAppKit<[], DAppKitCompatibleClien
   dAppKit?: TDAppKit;
 };
 
-export function useWAllets<TDAppKit extends DAppKit<[], DAppKitCompatibleClient> = RegisteredDAppKit>(
+export function useWallets<TDAppKit extends DAppKit<[], DAppKitCompatibleClient> = RegisteredDAppKit>(
   options: UseWalletOptions<TDAppKit> = {},
 ) {
   const instance = options.dAppKit || useDappKitContext();
