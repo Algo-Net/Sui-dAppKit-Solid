@@ -1,5 +1,5 @@
 import type { DAppKit, DAppKitCompatibleClient, RegisteredDAppKit, UiWallet } from "@mysten/dapp-kit-core";
-import { createSignal, onCleanup } from "solid-js";
+import { createSignal, onSettled } from "solid-js";
 import { useDappKitContext } from "src/components/DAppKitProvider";
 
 export type UseWalletOptions<TDAppKit extends DAppKit<[], DAppKitCompatibleClient>> = {
@@ -15,11 +15,13 @@ export function useWallets<TDAppKit extends DAppKit<[], DAppKitCompatibleClient>
 
   const [walletState, setWalletState] = createSignal<readonly UiWallet[]>(targetStore.get());
 
-  const unsubscribe = targetStore.subscribe((newValue) => {
-    setWalletState(newValue);
-  });
+  onSettled(() => {
+    const unsubscribe = targetStore.subscribe((newValue) => {
+      setWalletState(newValue);
+    });
 
-  onCleanup(() => unsubscribe());
+    return unsubscribe;
+  });
 
   return walletState;
 }

@@ -1,5 +1,5 @@
 import type { DAppKit, DAppKitCompatibleClient, RegisteredDAppKit } from "@mysten/dapp-kit-core";
-import { createSignal, onCleanup } from "solid-js";
+import { createSignal, onSettled } from "solid-js";
 import { useDappKitContext } from "src/components/DAppKitProvider";
 
 export type UseCurrentNetworkOptions<TDAppKit extends DAppKit<[], DAppKitCompatibleClient>> = {
@@ -15,11 +15,13 @@ export function useCurrentNetwork<TDAppKit extends DAppKit<[], DAppKitCompatible
 
   const [currentNetworkState, setCurrentNetworkState] = createSignal(targetStore.get());
 
-  const unsubscribe = targetStore.subscribe((newValue) => {
-    setCurrentNetworkState(newValue);
-  });
+  onSettled(() => {
+    const unsubscribe = targetStore.subscribe((newValue) => {
+      setCurrentNetworkState(newValue);
+    });
 
-  onCleanup(() => unsubscribe());
+    return unsubscribe;
+  });
 
   return currentNetworkState;
 }
