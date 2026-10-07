@@ -3,7 +3,7 @@ import { renderHook } from "@solidjs/testing-library";
 import type { JSX } from "@solidjs/web/jsx-runtime";
 import { DAppKitProvider } from "src/components/DAppKitProvider";
 import { describe, expect, it } from "vitest";
-import { useWAllets } from "./index";
+import { useWallets } from "./index";
 
 interface MockState {
   name: string;
@@ -39,7 +39,7 @@ describe("useWallets()", () => {
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
-    const { result } = renderHook(() => useWAllets(), { wrapper });
+    const { result } = renderHook(() => useWallets(), { wrapper });
 
     expect(result()).toEqual([{ name: "Slush Wallet" }]);
   });
@@ -53,7 +53,7 @@ describe("useWallets()", () => {
       <DAppKitProvider dAppKit={mockDAppKit}>{props.children}</DAppKitProvider>
     );
 
-    const { result } = renderHook(() => useWAllets(), { wrapper });
+    const { result } = renderHook(() => useWallets(), { wrapper });
 
     mockWalletStore.emit([{ name: "Slush Wallet" }, { name: "EVE Vault" }]);
 
@@ -74,7 +74,7 @@ describe("useWallets()", () => {
       <DAppKitProvider dAppKit={primaryDAppKit}>{props.children}</DAppKitProvider>
     );
 
-    const { result } = renderHook(() => useWAllets({ dAppKit: overrideDAppKit }), { wrapper });
+    const { result } = renderHook(() => useWallets({ dAppKit: overrideDAppKit }), { wrapper });
 
     expect(result()).toEqual([{ name: "Override Wallet" }]);
   });

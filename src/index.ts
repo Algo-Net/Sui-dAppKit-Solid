@@ -11,4 +11,4 @@ export { useCurrentNetwork } from "src/hooks/useCurrentNetwork";
 export { useCurrentWallet } from "src/hooks/useCurrentWallet";
 export { useDAppKit } from "src/hooks/useDAppKit";
 export { useWalletConnection } from "src/hooks/useWalletConnection";
-export { useWAllets } from "src/hooks/useWallets";
+export { useWallets } from "src/hooks/useWallets";
