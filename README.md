@@ -83,7 +83,7 @@ Don't forget to include the provided CSS styles in your project:
 ```tsx
 import "@algonet/sui-dappkit-solid/ui.css";
 // or
-import "@algonet/sui-dappkit-solid/dist/dapp-kit-solid.css";
+import "@algonet/sui-dappkit-solid/dist/sui-dapp-kit-solid.css";
 ```
 
 ### 4. Use hooks for wallet state
@@ -229,7 +229,7 @@ type UseWalletConnectionOptions<TDAppKit> = {
 function useWalletConnection(options?: UseWalletConnectionOptions<TDAppKit>): () => Connection | null;
 ```
 
-#### `useWAllets`
+#### `useWallets`
 
 Returns a signal for the list of discovered wallets.
 
@@ -238,7 +238,7 @@ type UseWalletOptions<TDAppKit> = {
   dAppKit?: TDAppKit;
 };
 
-function useWAllets(options?: UseWalletOptions<TDAppKit>): () => readonly UiWallet[];
+function useWallets(options?: UseWalletOptions<TDAppKit>): () => readonly UiWallet[];
 ```
 
 ---
@@ -283,7 +283,7 @@ sui-dappkit-solid/
 │   │   ├── useCurrentWallet/      # Current wallet info signal
 │   │   ├── useDAppKit/            # DAppKit instance retrieval
 │   │   ├── useWalletConnection/   # Connection state signal
-│   │   └── useWAllets/            # Discovered wallets list signal
+│   │   └── useWallets/            # Discovered wallets list signal
 │   ├── index.ts                # Main entry point (hooks + components)
 │   ├── ui.ts                   # UI entries point (ConnectButton, ConnectModal, CSS)
 │   ├── ui.css                  # Tailwind-based default styles
@@ -327,7 +327,7 @@ The library is built with [Vite](https://vitejs.dev/) in library mode, producing
 
 - **`dist/index.js`** — Main entry (hooks + components)
 - **`dist/ui.js`** — UI components entry
-- **`dist/dapp-kit-solid.css`** — Default stylesheet
+- **`dist/sui-dapp-kit-solid.css`** — Default stylesheet
 - TypeScript declaration files (`.d.ts`) alongside each entry
 
 ```bash
