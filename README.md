@@ -19,11 +19,11 @@ pnpm add @algonet/sui-dappkit-solid
 
 This library requires the following peer dependencies:
 
-| Package | Version |
-|---------|---------|
-| [@mysten/sui](https://www.npmjs.com/package/@mysten/sui) | ^2.0.0 |
-| [solid-js](https://www.npmjs.com/package/solid-js) | ^2.0.0 |
-| [tailwindcss](https://www.npmjs.com/package/tailwindcss) | ^4.0.0 |
+| Package                                                  | Version |
+| -------------------------------------------------------- | ------- |
+| [@mysten/sui](https://www.npmjs.com/package/@mysten/sui) | ^2.0.0  |
+| [solid-js](https://www.npmjs.com/package/solid-js)       | ^2.0.0  |
+| [tailwindcss](https://www.npmjs.com/package/tailwindcss) | ^4.0.0  |
 
 ---
 
@@ -32,20 +32,25 @@ This library requires the following peer dependencies:
 ### 1. Create your DAppKit instance
 
 ```tsx
-import { createDAppKit } from "@mysten/dapp-kit-core";
-import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
-import { getObjectsByOwner } from "@mysten/sui/client";
+import { createDAppKit } from "@algonet/sui-dapp-kit-solid";
+import { SuiGrpcClient } from "@mysten/sui/grpc";
 
-const dAppKit = createDAppKit<
-  "sui",
-  { type: "sui" },
-  ReturnType<typeof getFullnodeUrl>,
-  { type: "server"; methods: SuiClientMethods }
->({
-  client: new SuiClient({ url: getFullnodeUrl("testnet") }),
-  wallets: [/* wallet adapters */],
+const network = 'testnet';
+
+export const grpcClient = new SuiGrpcClient({
+  network,
+  baseUrl: "https://fullnode.testnet.sui.io:443",
+});
+
+const dAppKit = createDAppKit({
+  networks: [network],
+  createClient: () => grpcClient,
+  autoConnect: true,
+  defaultNetwork: network
 });
 ```
+
+<br>
 
 ### 2. Wrap your app with `DAppKitProvider`
 
@@ -60,6 +65,8 @@ function App() {
   );
 }
 ```
+
+<br>
 
 ### 3. Connect UI components
 
@@ -78,13 +85,7 @@ function YourUI() {
 }
 ```
 
-Don't forget to include the provided CSS styles in your project:
-
-```tsx
-import "@algonet/sui-dappkit-solid/ui.css";
-// or
-import "@algonet/sui-dappkit-solid/dist/sui-dapp-kit-solid.css";
-```
+<br>
 
 ### 4. Use hooks for wallet state
 
@@ -104,20 +105,18 @@ function AccountDisplay() {
 }
 ```
 
----
+<br>
 
-## 📦 API Reference
+## Components
 
-### Components
-
-#### `DAppKitProvider`
+### `DAppKitProvider`
 
 The context provider that supplies the DAppKit instance throughout your SolidJS component tree.
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `dAppKit` | `DefaultExpectedDppKit` | ✅ Yes | The DAppKit instance created via `createDAppKit` |
-| `children` | `ParentProps` | ✅ Yes | Child components that will have access to the DAppKit context |
+| Prop       | Type                    | Required | Description                                                   |
+| ---------- | ----------------------- | -------- | ------------------------------------------------------------- |
+| `dAppKit`  | `DefaultExpectedDppKit` | ✅ Yes    | The DAppKit instance created via `createDAppKit`              |
+| `children` | `ParentProps`           | ✅ Yes    | Child components that will have access to the DAppKit context |
 
 ```tsx
 type DAppKitProviderProps = ParentProps<{
@@ -125,13 +124,15 @@ type DAppKitProviderProps = ParentProps<{
 }>;
 ```
 
-#### `ConnectButton`
+<br>
+
+### `ConnectButton`
 
 A pre-built button component that toggles wallet connection. Renders as a custom element `<mysten-dapp-kit-connect-button>`. The underlying DOM element is defined by the core package.
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `dAppKit` | `DAppKit<[], DAppKitCompatibleClient>` | ❌ No | Optional override of the instance from context |
+| Prop      | Type                                   | Required | Description                                    |
+| --------- | -------------------------------------- | -------- | ---------------------------------------------- |
+| `dAppKit` | `DAppKit<[], DAppKitCompatibleClient>` | ❌ No     | Optional override of the instance from context |
 
 ```tsx
 type ConnectButtonProps = {
@@ -139,13 +140,15 @@ type ConnectButtonProps = {
 };
 ```
 
-#### `ConnectModal`
+<br>
+
+### `ConnectModal`
 
 A pre-built modal component for wallet discovery and connection. Renders as a custom element `<mysten-dapp-kit-connect-modal>`.
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `dAppKit` | `DAppKit<[], DAppKitCompatibleClient>` | ❌ No | Optional override of the instance from context |
+| Prop      | Type                                   | Required | Description                                    |
+| --------- | -------------------------------------- | -------- | ---------------------------------------------- |
+| `dAppKit` | `DAppKit<[], DAppKitCompatibleClient>` | ❌ No     | Optional override of the instance from context |
 
 ```tsx
 type ConnectModalProps = {
@@ -153,13 +156,13 @@ type ConnectModalProps = {
 };
 ```
 
----
+<br>
 
-### Hooks
+## Hooks
 
 All hooks can optionally accept a `dAppKit` parameter to override the instance from context. They return SolidJS signals that reactively update when wallet state changes.
 
-#### `useDAppKit`
+### `useDAppKit`
 
 Returns the active DAppKit instance. Must be called within a `DAppKitProvider`.
 
@@ -167,9 +170,9 @@ Returns the active DAppKit instance. Must be called within a `DAppKitProvider`.
 function useDAppKit<TDAppKit>(dAppKit?: TDAppKit): TDAppKit;
 ```
 
-> ⚠️ Throws an error if used outside of a `DAppKitProvider` context.
+<br>
 
-#### `useCurrentAccount`
+### `useCurrentAccount`
 
 Returns a signal for the currently connected account address, or `null` if not connected.
 
@@ -181,7 +184,9 @@ type UseCurrentAccountOptions<TDAppKit> = {
 function useCurrentAccount(options?: UseCurrentAccountOptions<TDAppKit>): () => Account | null;
 ```
 
-#### `useCurrentWallet`
+<br>
+
+### `useCurrentWallet`
 
 Returns a signal for the currently connected wallet.
 
@@ -193,7 +198,9 @@ type UseCurrentWalletOptions<TDAppKit> = {
 function useCurrentWallet(options?: UseCurrentWalletOptions<TDAppKit>): () => WalletInfo | null;
 ```
 
-#### `useCurrentClient`
+<br>
+
+### `useCurrentClient`
 
 Returns a signal for the current RPC client instance.
 
@@ -205,7 +212,9 @@ type UseCurrentClientOptions<TDAppKit> = {
 function useCurrentClient(options?: UseCurrentClientOptions<TDAppKit>): () => SuiClient | undefined;
 ```
 
-#### `useCurrentNetwork`
+<br>
+
+### `useCurrentNetwork`
 
 Returns a signal for the current network.
 
@@ -217,7 +226,9 @@ type UseCurrentNetworkOptions<TDAppKit> = {
 function useCurrentNetwork(options?: UseCurrentNetworkOptions<TDAppKit>): () => Network | undefined;
 ```
 
-#### `useWalletConnection`
+<br>
+
+### `useWalletConnection`
 
 Returns a signal for the full wallet connection state (account, wallet, discovered wallets, etc.).
 
@@ -229,7 +240,9 @@ type UseWalletConnectionOptions<TDAppKit> = {
 function useWalletConnection(options?: UseWalletConnectionOptions<TDAppKit>): () => Connection | null;
 ```
 
-#### `useWallets`
+<br>
+
+### `useWallets`
 
 Returns a signal for the list of discovered wallets.
 
@@ -241,11 +254,11 @@ type UseWalletOptions<TDAppKit> = {
 function useWallets(options?: UseWalletOptions<TDAppKit>): () => readonly UiWallet[];
 ```
 
----
+<br>
 
-### Context
+## Context
 
-#### `useDappKitContext`
+### `useDappKitContext`
 
 Internal hook to access the DAppKit context directly. Useful when you need low-level access to the provider's context value.
 
@@ -253,9 +266,9 @@ Internal hook to access the DAppKit context directly. Useful when you need low-l
 function useDappKitContext(): DefaultExpectedDppKit | undefined;
 ```
 
----
+<br>
 
-### Re-exports
+## Re-exports
 
 This library re-exports everything from **`@mysten/dapp-kit-core`** as a convenience:
 
@@ -263,9 +276,9 @@ This library re-exports everything from **`@mysten/dapp-kit-core`** as a conveni
 export * from "@mysten/dapp-kit-core";
 ```
 
-See the [dApp Kit Core docs](https://github.com/MystenLabs/sui/tree/main/sdk/typescript/dapp-kit-core) for all core types and utilities.
+See the [dApp Kit Core docs](https://github.com/MystenLabs/ts-sdks/tree/main/packages/dapp-kit/packages/dapp-kit-core) for all core types and utilities.
 
----
+<br>
 
 ## 📁 Project Structure
 
@@ -296,33 +309,35 @@ sui-dappkit-solid/
 └── README.md
 ```
 
----
+<br>
 
 ## 🛠 Development
-
 ### Prerequisites
-
 - **[Node.js](https://nodejs.org/)** v26.4.0 (see `.nvmrc`)
 - **[pnpm](https://pnpm.io/)** v10.33.2
 
-### Setup
+<br>
 
+### Setup
 ```bash
 git clone https://github.com/Algo-Net/Sui-dAppKit-Solid.git
 cd sui-dappkit-solid
 pnpm install
 ```
 
+<br>
+
 ### Scripts
 
-| Script | Description |
-|--------|-------------|
+| Script       | Description                                                 |
+| ------------ | ----------------------------------------------------------- |
 | `pnpm build` | Build the library with Vite (ESM) + TypeScript declarations |
-| `pnpm test` | Run the test suite with Vitest |
-| `pnpm lint` | Lint and format with Biome |
+| `pnpm test`  | Run the test suite with Vitest                              |
+| `pnpm lint`  | Lint and format with Biome                                  |
+
+<br>
 
 ### Building
-
 The library is built with [Vite](https://vitejs.dev/) in library mode, producing:
 
 - **`dist/index.js`** — Main entry (hooks + components)
@@ -334,6 +349,8 @@ The library is built with [Vite](https://vitejs.dev/) in library mode, producing
 pnpm build
 ```
 
+<br>
+
 ### Running Tests
 
 ```bash
@@ -342,10 +359,9 @@ pnpm test
 
 Tests are written with [Vitest](https://vitest.dev/) and render hooks/components using [`@solidjs/testing-library`](https://www.npmjs.com/package/@solidjs/testing-library).
 
----
+<br>
 
 ## 🔧 Configuration
-
 ### Biome (Linter & Formatter)
 
 This project uses [Biome](https://biomejs.dev/) for linting and formatting:
@@ -360,6 +376,8 @@ This project uses [Biome](https://biomejs.dev/) for linting and formatting:
 pnpm lint
 ```
 
+<br>
+
 ### TypeScript
 
 - **Target:** ES2022
@@ -368,43 +386,10 @@ pnpm lint
 - **JSX:** Preserved (handled by the Solid compiler)
 - **`jsxImportSource`:** `@solidjs/web`
 
----
-
-## 🌐 Exports Map
-
-| Entry | Type Resolution | Import Path |
-|-------|-----------------|-------------|
-| Main library | `"solid"` → source, `"import"` → dist | `@algonet/sui-dappkit-solid` |
-| UI components + styles | `"solid"` → source, `"import"` + `"style"` → dist | `@algonet/sui-dappkit-solid/ui` |
-
----
-
-## 📝 License
-
-This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026 AlgoNet.
-
----
+<br>
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit issues and pull requests.
+The scope of this project is to provide a SolidJS equivalent to the react implementation. Any additions, improvements or fixes that fall within this scope are welcome.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 🏗 Author
-
-**Ocky** — [ocky@algonet.xyz](mailto:ocky@algonet.xyz)
-
-### Organization
-
-**[AlgoNet](https://github.com/Algo-Net)**
-
----
-
-<a href="#readme-top">Back to top</a>
+Please feel free to submit issues and pull requests.
